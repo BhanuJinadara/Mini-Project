@@ -27,7 +27,7 @@ class seatBookingSystem {
         static const int COLS = 5;
         seat hall[ROWS][COLS];
         HashTable ticketTable; // Hash Table for O(1) Lookup & Cancellation
-        int tickercounter = 1000;
+        int ticketCounter = 1000;
 
     public:
         seatBookingSystem(){
@@ -41,9 +41,60 @@ class seatBookingSystem {
         void displaySeatingChart(){
             cout<<"\n   --- SCREEN THIS WAY ---\n\n      ";
             for (int i = 0; i<COLS; i++){
-                
+                cout<<i+1<<" "<<"\n";
             }
+            for (int j =0; j<COLS; j++){
+                char rowLabel = 'A' + j;
+                cout<<rowLabel<<" | ";
+                for (int k = 0;k<COLS;k++){
+                    if (hall[j][k].isBooked){
+                        cout<<"[X]"<<endl;
+
+                    }
+                    else{
+                        cout<<"[O]"<<endl;
+                    }
+
+                }
+                cout<<"\n[o] Avaliable   [X] Booked\n";
+            }
+
         }
+
+        void bookSeat(char row, int col, const string& name){
+
+                int r = row - 'A';
+                int c = col - 1;
+
+                if(r < 0 || r>= ROWS || c<0 || c>=COLS){
+                    cout<<"Invalid seat position!"<<endl;
+                    // return;
+                }
+
+
+                if (hall[r][c].isBooked){
+                    cout<<"Seat"<<row<<col<<"is already booked!"<<endl; 
+                    //return;           
+                }
+
+                //
+                hall[r][c].isBooked = true;
+                hall[r][c].customerName = name;
+
+                //Generating the ticket ID to store in the hash table
+                string tID = "TKT"+ to_string(ticketCounter++);
+                ticket newTicket = {tID,name,r,c};
+                //the ticket info need to store in the hash table
+
+                cout<<"\nSuccess! Ticket ID: "<<tID<<" reseved for "<<name<<" at seat"<<r<<c<<".\n";
+                
+
+
+
+        }
+
+
+        
 
 };
 
